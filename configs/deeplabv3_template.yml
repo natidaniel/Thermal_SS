@@ -1,0 +1,45 @@
+model:
+    arch: smp_deeplabv3 # arch name as appears in models/__init__.py
+    n_channels: 3 
+    n_classes: 18
+
+data:
+    dataset: thermal_loader # data loader name as appears in dataloders/__init__.py
+    path: /home/ubuntu/Datasets/Elbit/4Semantic/night_org
+    image_split: train_img #name of img directory in path
+    label_split: train_label # name of label directory in path
+    train_img_list: /home/ubuntu/Elbit_Clean_code/image_lists/elbit_thermal_images_train.txt # list of images in path that are used for training
+    val_img_list: /home/ubuntu/Elbit_Clean_code/image_lists/elbit_thermal_images_val.txt # list of images in path that are used for validation
+    test_img_list: /home/ubuntu/Elbit_Clean_code/image_lists/elbit_thermal_images_test.txt # list of images in path that are used for test
+    img_rows: 512 # height
+    img_cols: 640 # width
+    num_train_images: 655
+    n_channels: 3 
+
+training:
+    run_dir: runs # in this directory will be created a directory to contain logs,models etc. e.g.: runs/2000_10_10_18_00_00_deeplabv3
+    pretrained_model:    # path to a pretrained checkpoint model if relevant
+    saved_iou_model: segmentation_best_iou_model.pkl # name of save best miou model
+    saved_weighted_iou_model: segmentation_best_weighted_iou_model.pkl # name of save best weighted iou model
+    train_epochs: 300 # num of training epochs
+    train_iters:  10000 # (not relevant anymore)
+    val_interval: 100    # num of batch iterations between validation loop
+    print_interval: 20  # num of iterations between printing loss status
+    batch_size: 32 
+    n_workers: 4
+    optimizer:
+        name: 'adam' # name of optimizer as appears in optimizers/__init__.py
+        lr: 1.0e-4
+
+    loss:
+        name: 'cross_entropy' # name of loss as appears in losses/__init__.py
+        reduction: 'mean'
+        ignore_indices: [13] # indices to be ignored
+        class_weights: # 
+    lr_schedule:         
+        
+validation:
+    metric: mIOU # not used at the moment
+    
+misc:        
+    random_seed: 42
